@@ -1,10 +1,11 @@
 #!/bin/bash
 #####################################################################################################
 #Script orthographe									            #
-#Version du script: V0.2									    #
-#Derniere edition: 25/03/2016									    #
+#Version du script: V0.5									    #
+#Derniere edition: 01/04/2016									    #
 #Auteur(s): Lévy MARQUES, Révisé par Benjamin HUSSON						    #
-#Description: Le script prend un fichier en parametre et affiche les fautes à lécran.               #
+#Description: Le script prend un fichier en parametre et affiche les fautes à lécran avec           #
+#proposition de mots ainsi que diverses options.                                                    #
 #												    #
 #####################################################################################################
 
@@ -21,21 +22,21 @@ for i in ${!tab[@]} #On parcours les éléments du tableau
 do
 	if ! ./verif.sh ${tab[i]} Dictionnaire #On vérifie si le mot n'est pas dans le dico
 	then
-		egrep  --color=auto -i -n "(^| )${tab[i]}($| )" $1 #On utilise un egrep pour pouvoir utiliser le symbole " | " qui permet de déterminer si le mot est en debut de ligne OU bien après un éspace.
-		echo "Le mot << ${tab[i]} >> n'est pas dans le dico que voulez vous faire? Voici des suggestions:"
-		./propose.sh ${tab[i]}
-		echo
-		select var in Ajouter Remplacer Ignorer
+		egrep  --color=auto -i -n "(^| )${tab[i]}($| )" $1 #On utilise un egrep pour pouvoir utiliser le symbole " | " qui permet de déterminer si le mot est en debut de ligne OU bien après un éspace ET Avant un espace OU en fin de ligne
+		echo "Le mot << ${tab[i]} >> n'est pas dans le dico que voulez vous faire? Voici des éventuelles suggestions:"
+		./propose.sh ${tab[i]} # Utilisation du script pour proposer
+		echo #Retour à la ligne
+		select var in Ajouter Remplacer Ignorer #Utilisation d'un menu
 		do
 			case $var in
-				Ajouter)
-					./ajouter.sh ${tab[i]} Dictionnaire
+				Ajouter) #Cas ou l'on ajoute le mot au dictionnaire
+					./ajouter.sh ${tab[i]} Dictionnaire 
 					break;;
-				Remplacer)
-					read -p "Remplacer par : " remplacement
-					./remplacer.sh ${tab[i]} $remplacement $1
+				Remplacer) #Cas ou l'on remplace le mot dans le texte
+					read -p "Remplacer par : " remplacement #On lit une entrée user
+					./remplacer.sh ${tab[i]} $remplacement $1 #On applique le script de remplacement
 					break;;
-				Ignorer)
+				Ignorer) #Cas ou l'on ignore le mot erroné
 					break;;
 			esac
 		done

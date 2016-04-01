@@ -1,7 +1,7 @@
 #!/bin/bash
 #####################################################################################################
 #Script orthographe									            #
-#Version du script: V0.2									    #
+#Version du script: V0.3									    #
 #Derniere edition: 25/03/2016									    #
 #Auteur(s): Lévy MARQUES						                            #
 #Description: Avec 2 parametres le script permet d'ajouter $1 dans le fichier $2                    #
